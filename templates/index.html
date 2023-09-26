@@ -1,0 +1,236 @@
+{% extends "layout.html" %} {% block title %} Home {% endblock %} {% block main
+%}
+<script>
+  let cartItems = [];
+
+function addItem(product) {
+  inCart = false;
+  for (let j = 0; j < cartItems.length; j++) {
+    const p = cartItems[j];
+    if (product.id == p.id) {
+      increaseItem(p.id);
+      inCart = true;
+      break;
+    }   
+  }
+  if (inCart == false) {
+    product.amount = 1;
+    cartItems.push(product);
+  }
+  inCart = false;
+  drawList();
+    
+}
+function drawList(){
+  let listHTML = "";
+  let total = 0
+    for (let i = 0; i < cartItems.length; i++) {
+      listHTML += generateItem(cartItems[i]);  
+      total += cartItems[i].price * cartItems[i].amount;  
+    }
+    document.querySelector('#cart-body').innerHTML = listHTML;
+    document.querySelector('#order-total').innerHTML = "$" + total;
+}
+
+function increaseItem(id) {
+    let p = cartItems.find(function(product) {
+    return product.id === id;});
+    if(p.amount < p.stock){
+      p.amount++;
+      drawList();
+    }   
+  }
+  function reduceItem(id) {
+    let p = cartItems.find(function(product) {
+    return product.id === id;});
+    if(p.amount > 0){
+      p.amount--;
+      drawList();
+    }   
+  }
+  function removeItem(id) {
+    let p = cartItems.filter(function(product) {
+    return product.id !== id;});
+    cartItems = p;
+    drawList();  
+  }
+
+function generateItem(product){
+  let a = `
+<li class="row mx-0 mb-4 align-items-center">
+                  <button
+                    type="button"
+                    class="btn-close btn-sm"
+                    onClick="removeItem(`;
+                    let abis = `);"
+                    aria-label="Remove"
+                  ></button>
+                  <a href="#" class="col-2" style="padding-left: 0 !important">
+                    <img
+                      src="
+`;
+let b = `
+                "
+                      alt="Product"
+                      class="list-snap-img"
+                    />
+                  </a>
+                  <div class="col" style="padding-right: 0 !important">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <p class="h6 mb-1">
+`;
+let c = `                              
+                              
+                            </p>
+
+                            <div class="post-meta font-small">
+                              <p class="me-3 text-black-50">$`;
+let d = `</p>
+                            </div>
+                          </td>
+                          <td><div style="width: 4px"></div></td>
+                          <td class="al-right pl-6">
+                            <div class="container">
+                              <h5>$
+`;
+let e = ` 
+                              </h5>
+                              <div class="cart-controls justify-content-end">
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="subtractButton"
+                                  onClick="reduceItem(`;
+let f = `)"
+                                >
+                                  -
+                                </button>
+
+                                <input
+                                  type="text"
+                                  class="form-control text-center input-quantity"
+                                  value="`;
+let g = `"
+                                  id="quantity"
+                                  readonly
+                                />
+
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="addButton"
+                                  onClick="increaseItem(`;
+let h = `)"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+`;
+return a+product.id + abis + product.thumbnail + b + product.brand + " | " + product.title + c + product.price + d + (product.price * product.amount) + e + product.id + f + product.amount + g + product.id + h;
+}
+</script> 
+<!-- offcanvas cart -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="offcanvasRight"
+  aria-labelledby="offcanvasRightLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Carrito de compras</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="class=h-100 p-2">
+      <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="name">
+        <div class="container border-bottom mb-4">
+          <div class="row" >
+            <div class="col p-0">
+              <ul id="cart-body" class="list-unstyled">
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="container al-right pt-0">
+          <h4><span class="h6 text-indigo">Total </span><span id="order-total">$XXXX</span></h4>
+          <button class="btn btn-primary" type="button">Iniciar compra</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- end of cart -->
+
+<section>
+  <div class="container">
+    <div class="my-3 py-3 text-center">
+      <h2 class="display-4">Perfumes</h2>
+    </div>
+
+    <div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+      {% for p in products %}
+                    
+      <div class="col">
+        <div class="card shadow-sm mb-4 d-flex flex-column">
+          <div class="card-img-container">
+            <img
+            src={{ p.thumbnail }} 
+            class="bd-placeholder-img card-img-top"
+            width="100%"
+            height="auto"
+            aria-label="Placeholder: Thumbnail"
+            preserveAspectRatio="xMidYMid slice"
+            focusable="false"
+          />
+        </div>
+          
+          <div class="card-body">
+            <p class="card-vol">{{ p.brand }}</p>
+            <p class="card-title">{{ p.title }}</p>
+
+            <div class="d-flex justify-content-between align-items-center rel">
+              <p class="card-price">${{ p.price }}</p>
+              <small class="text-body-secondary row">
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight"
+                    aria-controls="cart"
+                    onclick="addItem({{ p }})"
+                  >
+                    Agregar al carro
+                  </button>
+                </div>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      
+      
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

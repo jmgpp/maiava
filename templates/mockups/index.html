@@ -1,0 +1,996 @@
+{% extends "layout.html" %} {% block title %} Home {% endblock %} {% block main
+%}
+<!-- offcanvas cart -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="offcanvasRight"
+  aria-labelledby="offcanvasRightLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Carrito de compras</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="class=h-100 p-2">
+      <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="name">
+        <div class="container border-bottom mb-4">
+          <div class="row">
+            <div class="col p-0">
+              <ul class="list-unstyled">
+                <li class="row mx-0 mb-4 align-items-center">
+                  <button
+                  type="button"
+                  class="btn-close btn-sm"
+                  
+                  aria-label="Remove"
+                ></button>
+                  <a href="#" class="col-2" style="padding-left: 0 !important;">
+                    <img
+                      src="../static/images/111173_1.jpg"
+                      alt="Product"
+                      class="list-snap-img"
+                    />
+                  </a>
+                  <div class="col" style="padding-right: 0 !important;">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            
+                              <p class="h6 mb-1">
+                                Natura - Humor Transforma Eau De Toilette
+                              </p>
+                            
+                            <div class="post-meta font-small">
+                              <p class="me-3 text-black-50">$10.412</p>
+                            </div>
+                          </td>
+                          <td><div style="width: 4px"></div></td>
+                          <td class="al-right pl-6">
+                            <div class="container">
+                              <h5>
+                                $10.412
+                              </h5>
+                              <div class="cart-controls justify-content-end">
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="subtractButton"
+                                >
+                                  -
+                                </button>
+
+                                <input
+                                  type="text"
+                                  class="form-control text-center input-quantity"
+                                  value="2"
+                                  id="quantity"
+                                  readonly
+                                />
+
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="addButton"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+                <li class="row mx-0 mb-4 align-items-center">
+                  <button
+                  type="button"
+                  class="btn-close btn-sm"
+                  
+                  aria-label="Remove"
+                ></button>
+                  <a href="#" class="col-2" style="padding-left: 0 !important;">
+                    <img
+                      src="../static/images/111177_1.jpg"
+                      alt="Product"
+                      class="list-snap-img"
+                    />
+                  </a>
+                  <div class="col" style="padding-right: 0 !important;">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            
+                              <p class="h6 mb-1">
+                                Natura - Humor Transforma Eau De Toilette
+                              </p>
+                            
+                            <div class="post-meta font-small">
+                              <p class="me-3 text-black-50">$10.412</p>
+                            </div>
+                          </td>
+                          <td><div style="width: 4px"></div></td>
+                          <td class="al-right pl-6">
+                            <div class="container">
+                              <h5>
+                                $10.412
+                              </h5>
+                              <div class="cart-controls justify-content-end">
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="subtractButton"
+                                >
+                                  -
+                                </button>
+
+                                <input
+                                  type="text"
+                                  class="form-control text-center input-quantity"
+                                  value="2"
+                                  id="quantity"
+                                  readonly
+                                />
+
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="addButton"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+                <li class="row mx-0 mb-4 align-items-center">
+                  <button
+                  type="button"
+                  class="btn-close btn-sm"
+                  
+                  aria-label="Remove"
+                ></button>
+                  <a href="#" class="col-2" style="padding-left: 0 !important;">
+                    <img
+                      src="../static/images/111175_1.jpg"
+                      alt="Product"
+                      class="list-snap-img"
+                    />
+                  </a>
+                  <div class="col" style="padding-right: 0 !important;">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            
+                              <p class="h6 mb-1">
+                                Natura - Humor Transforma Eau De Toilette
+                              </p>
+                            
+                            <div class="post-meta font-small">
+                              <p class="me-3 text-black-50">$10.412</p>
+                            </div>
+                          </td>
+                          <td><div style="width: 4px"></div></td>
+                          <td class="al-right pl-6">
+                            <div class="container">
+                              <h5>
+                                $10.412
+                              </h5>
+                              <div class="cart-controls justify-content-end">
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="subtractButton"
+                                >
+                                  -
+                                </button>
+
+                                <input
+                                  type="text"
+                                  class="form-control text-center input-quantity"
+                                  value="2"
+                                  id="quantity"
+                                  readonly
+                                />
+
+                                <button
+                                  class="btn btn-secondary btn-ad-rem-cart"
+                                  type="button"
+                                  id="addButton"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="container al-right pt-0">
+          <h4><span class="h6 text-indigo">Total </span>$73.412</h4>
+          <button class="btn btn-primary" type="button">Iniciar compra</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- end of cart -->
+
+<div class="album">
+  <div class="me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+    <div class="mb-3 pb-3">
+      <h2 class="display-3">Ofertas de octubre</h2>
+    </div>
+  </div>
+
+  <!-- carousel -->
+  <div
+    id="carouselOffers"
+    class="carousel slide bg-light container p-5"
+    data-bs-theme="dark"
+  >
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="container d-block w-100">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/122948_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/111177_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/111173_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="container d-block w-100">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/122948_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/111177_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/111173_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="container d-block w-100">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/122948_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/111177_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow-sm mb-4 card-discount">
+                <div class="ribbon">
+                  <span class="shadow">30% OFF</span>
+                </div>
+                <img
+                  src="../static/images/111173_1.jpg"
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="325"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                />
+                <div class="card-body">
+                  <p class="card-vol">Natura</p>
+                  <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center rel"
+                  >
+                    <p class="card-list-price">$15.345</p>
+                    <p class="card-price">$10.742</p>
+                    <small class="text-body-secondary">
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasRight"
+                          aria-controls="cart"
+                        >
+                          Agregar al carro
+                        </button>
+                      </div>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselOffers"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselOffers"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <!--  -->
+
+  <section>
+    <div class="container">
+      <div
+        class="me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden"
+      >
+        <div class="my-3 py-3">
+          <h2 class="display-4">Perfumes</h2>
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/NATARG-78863_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/111177_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/111175_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/NATARG-78863_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/111177_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/111175_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/NATARG-78863_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/111177_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm mb-4 card-discount">
+            <img
+              src="../static/images/111175_1.jpg"
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+            <div class="card-body">
+              <p class="card-vol">Natura</p>
+              <p class="card-title">Humor Transforma Eau De Toilette</p>
+
+              <div
+                class="d-flex justify-content-between align-items-center rel"
+              >
+                <p class="card-price">$10.742</p>
+                <small class="text-body-secondary">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% endblock %}
+</div>

@@ -38,6 +38,9 @@ function increaseItem(id) {
     if(p.amount < p.stock){
       p.amount++;
       drawList();
+    }
+    else {
+      showAlert("Llegaste al límite de stock dispnible.", "info");
     }   
   }
   function reduceItem(id) {
@@ -54,7 +57,23 @@ function increaseItem(id) {
     cartItems = p;
     drawList();  
   }
+  function showAlert(message, type) {
+            let alertType = "alert-" + type;
+            let alertElement = document.createElement('div');
+            alertElement.classList.add('alert', alertType, 'alert-dismissible', 'fade', 'show');
+            alertElement.setAttribute('role', 'alert');
+            alertElement.innerHTML = message + `
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                
+            `;
 
+            document.getElementById('alertContainer').appendChild(alertElement);
+
+            setTimeout(function() {
+                let bsAlert = new bootstrap.Alert(alertElement);
+                bsAlert.close();
+            }, 1500);
+        }
 function generateItem(product){
   let a = `
 <li class="row mx-0 mb-4 align-items-center">

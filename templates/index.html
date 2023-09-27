@@ -23,13 +23,21 @@ function addItem(product) {
 }
 function drawList(){
   let listHTML = "";
-  let total = 0
+  let total = 0;
+  let cartUnits = 0;
     for (let i = 0; i < cartItems.length; i++) {
       listHTML += generateItem(cartItems[i]);  
-      total += cartItems[i].price * cartItems[i].amount;  
+      total += cartItems[i].price * cartItems[i].amount;
+      cartUnits += cartItems[i].amount;
     }
+    
+    let itemsStr = (cartUnits == 1) ? "1 item en el carro": cartUnits + " items en el carro";
     document.querySelector('#cart-body').innerHTML = listHTML;
-    document.querySelector('#order-total').innerHTML = "$" + total;
+    document.querySelector('#order-total').innerHTML = formatCurrency(total);
+    document.querySelector('#items-total').innerHTML = itemsStr;
+    document.querySelector('#badge-container').innerHTML = (cartUnits > 0) ?
+    `<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                  ${cartUnits}</span>` : "";
 }
 
 function increaseItem(id) {
@@ -74,6 +82,30 @@ function increaseItem(id) {
                 bsAlert.close();
             }, 1500);
         }
+function goToCheckout(){     
+    // Create a form element
+    var form = document.createElement('form');
+
+    // Set the form attributes
+    form.setAttribute('method', 'post');
+    form.setAttribute('action', '/checkout'); // Replace with your target URL
+
+    // Create an input element
+    var input = document.createElement('input');
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'products'); // Replace with your parameter name
+    input.setAttribute('value', JSON.stringify(cartItems)); // Replace with your parameter value
+
+    // Append the input to the form
+    form.appendChild(input);
+
+    // Append the form to the body
+    document.body.appendChild(form);
+
+    // Submit the form
+    form.submit();
+
+}
 function generateItem(product){
   let a = `
 <li class="row mx-0 mb-4 align-items-center">
@@ -106,14 +138,14 @@ let c = `
                             </p>
 
                             <div class="post-meta font-small">
-                              <p class="me-3 text-black-50">$`;
+                              <p class="me-3 text-black-50">`;
 let d = `</p>
                             </div>
                           </td>
                           <td><div style="width: 4px"></div></td>
                           <td class="al-right pl-6">
                             <div class="container">
-                              <h5>$
+                              <h5>
 `;
 let e = ` 
                               </h5>
@@ -155,7 +187,13 @@ let h = `)"
                   </div>
                 </li>
 `;
-return a+product.id + abis + product.thumbnail + b + product.brand + " | " + product.title + c + product.price + d + (product.price * product.amount) + e + product.id + f + product.amount + g + product.id + h;
+return a + product.id + abis + product.thumbnail + b + product.brand + " | " + product.title + c + formatCurrency(product.price) + d + formatCurrency(product.price * product.amount) + e + product.id + f + product.amount + g + product.id + h;
+}
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(amount);
 }
 </script> 
 <!-- offcanvas cart -->
@@ -187,8 +225,9 @@ return a+product.id + abis + product.thumbnail + b + product.brand + " | " + pro
           </div>
         </div>
         <div class="container al-right pt-0">
-          <h4><span class="h6 text-indigo">Total </span><span id="order-total">$XXXX</span></h4>
-          <button class="btn btn-primary" type="button">Iniciar compra</button>
+          <small id="items-total">0 items en el carro</small>
+          <h4><span class="h6 text-indigo">Total </span><span id="order-total">$0</span></h4>
+          <button class="btn btn-primary" type="button" onclick="goToCheckout();">Iniciar compra</button>
         </div>
       </form>
     </div>
@@ -225,7 +264,7 @@ return a+product.id + abis + product.thumbnail + b + product.brand + " | " + pro
             <p class="card-title">{{ p.title }}</p>
 
             <div class="d-flex justify-content-between align-items-center rel">
-              <p class="card-price">${{ p.price }}</p>
+              <p class="card-price">{{ p.priceStr }}</p>
               <small class="text-body-secondary row">
                 <div class="btn-group">
                   <button

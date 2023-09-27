@@ -22,7 +22,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -39,18 +39,15 @@
               <div class="bi me-2" width="20" height="32"></div>
             </a>
 
-            <ul class="nav nav-pills" style="gap: 8px;">
+            <ul class="nav nav-pills" style="gap: 8px">
               <li class="nav-item">
                 <a href="/" class="nav-link active" aria-current="page"
-                  >Tienda</a>
+                  >Tienda</a
+                >
               </li>
-              
             </ul>
 
-            <form
-              class="col-12 col-lg-auto mb-2 mb-lg-0 px-2"
-              role="search"
-            >
+            <form class="col-12 col-lg-auto mb-2 mb-lg-0 px-2" role="search">
               <input
                 type="search"
                 class="form-control"
@@ -59,21 +56,7 @@
               />
             </form>
 
-            <div class="text-end ml-2">
-              <a href="/checkout"
-                type="button"
-                class="btn btn-primary position-relative pb-0"
-              >
-                <span class="material-symbols-outlined pb-0">
-                  shopping_cart
-                </span>
-                <span
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary"
-                >
-                  99+
-                </span>
-              </a>
-            </div>
+            <div id="cart-btn" class="text-end ml-2"></div>
           </div>
         </div>
       </header>
@@ -93,6 +76,33 @@
       </footer>
     </div>
 
-    
+    <script>
+      let currentPage = window.location.pathname;
+      let cartHTML = "";
+      if (currentPage === "/") {
+        cartHTML = `<button data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight"
+                class="btn btn-primary position-relative pb-0"
+              >
+                <span class="material-symbols-outlined pb-0">
+                  shopping_cart
+                </span>
+                <div id="badge-container"></div>
+                
+              </button>`;
+      } else {
+        cartHTML = `<a href="#"
+                type="button"
+                class="btn btn-secondary position-relative pb-0"
+              >
+                <span class="material-symbols-outlined pb-0">
+                  shopping_cart
+                </span>
+                <div id="badge-container"></div>
+                
+              </a>`;
+      }
+      document.querySelector("#cart-btn").innerHTML = cartHTML;
+    </script>
   </body>
 </html>

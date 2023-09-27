@@ -22,7 +22,7 @@ def index():
             cursor.execute("""
             SELECT id, brand, title, price, stock, thumbnail
             FROM "public"."products"
-            WHERE "visible" = true LIMIT 100""")
+            WHERE "visible" = true AND "stock" > 0 LIMIT 100""")
             # Fetch all rows as a list of tuples
             rows = cursor.fetchall()
 
@@ -90,7 +90,8 @@ def purchase():
             if p['amount'] > db_products[i]['stock']:
                 return render_template('failed.html')
         
-        client_id = get_client(name=name,email=email,phone=phone)
+        client_id = get_client(name,email,phone)
+        order_id = generate_order(client_id, products)
         
 
     return redirect("/")
@@ -100,6 +101,27 @@ def format_currency(amount):
 
     num = locale.format_string("%.2f", amount, grouping=True)
     return f"$ {num}"
+
+def generate_order(client_id, products):
+    total = 0
+    for p in products:
+        total += p['price'] * p['amount']
+    
+    connection = psycopg2.connect(POSTGRESQL_URI)
+    with connection:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO orders (client_id, total, status_id) VALUES (%s, %s, 1) RETURNING id", (client_id, total))
+                order_id = cursor.fetchone()
+
+                for p in products:
+                    cursor.execute("INSERT INTO \"order-items\" (order_id, product_id, price, amount) VALUES (%s, %s, %s, %s)", (order_id, p['id'], p['price'], p['amount']))
+
+                    cursor.execute("UPDATE products SET stock = stock - %s", (p['amount'],))
+
+            connection.commit()
+
+    return order_id
+    
 
 def get_client(name, email, phone):
     connection = psycopg2.connect(POSTGRESQL_URI)

@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block title %} Completar compra {% endblock %} {%
 block main %}
 <div id="data" style="display: none;">{{ items | tojson | safe }}</div>
-<form id="order-form" class="container" action="/submit" method="post">
+<form id="order-form" class="container" action="/purchase" method="post">
   <div class="row">
     <!-- second column -->
     <div class="col-md-5 order-md-2">
@@ -163,8 +163,13 @@ function completeOrder(){
       return false;
     }
   }
-  showAlert("Cachín! compra completa", "success");
-  
+  var input = document.createElement('input');
+  input.setAttribute('type', 'hidden');
+  input.setAttribute('name', 'products'); 
+  input.setAttribute('value', JSON.stringify(cartItems));
+
+  form.appendChild(input);
+  form.submit();
 }
 function validateEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

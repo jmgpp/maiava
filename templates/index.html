@@ -54,10 +54,12 @@ function increaseItem(id) {
   function reduceItem(id) {
     let p = cartItems.find(function(product) {
     return product.id === id;});
-    if(p.amount > 0){
+    if(p.amount > 1){
       p.amount--;
       drawList();
-    }   
+    } else {
+      removeItem(id);
+    }  
   }
   function removeItem(id) {
     let p = cartItems.filter(function(product) {

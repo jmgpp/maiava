@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import json
 import locale
-import sys
 
 
 app = Flask(__name__)

@@ -1,203 +1,7 @@
 {% extends "layout.html" %} {% block title %} Home {% endblock %} {% block main
 %}
-<script>
-  let cartItems = [];
+<div id="data" style="display: none;">{{ products | tojson | safe }}</div>
 
-function addItem(product) {
-  inCart = false;
-  for (let j = 0; j < cartItems.length; j++) {
-    const p = cartItems[j];
-    if (product.id == p.id) {
-      increaseItem(p.id);
-      inCart = true;
-      break;
-    }   
-  }
-  if (inCart == false) {
-    product.amount = 1;
-    cartItems.push(product);
-  }
-  inCart = false;
-  drawList();
-    
-}
-function drawList(){
-  let listHTML = "";
-  let total = 0;
-  let cartUnits = 0;
-    for (let i = 0; i < cartItems.length; i++) {
-      listHTML += generateItem(cartItems[i]);  
-      total += cartItems[i].price * cartItems[i].amount;
-      cartUnits += cartItems[i].amount;
-    }
-    
-    let itemsStr = (cartUnits == 1) ? "1 item en el carro": cartUnits + " items en el carro";
-    document.querySelector('#cart-body').innerHTML = listHTML;
-    document.querySelector('#order-total').innerHTML = formatCurrency(total);
-    document.querySelector('#items-total').innerHTML = itemsStr;
-    document.querySelector('#badge-container').innerHTML = (cartUnits > 0) ?
-    `<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
-                  ${cartUnits}</span>` : "";
-}
-
-function increaseItem(id) {
-    let p = cartItems.find(function(product) {
-    return product.id === id;});
-    if(p.amount < p.stock){
-      p.amount++;
-      drawList();
-    }
-    else {
-      showAlert("Llegaste al límite de stock dispnible.", "info");
-    }   
-  }
-  function reduceItem(id) {
-    let p = cartItems.find(function(product) {
-    return product.id === id;});
-    if(p.amount > 1){
-      p.amount--;
-      drawList();
-    } else {
-      removeItem(id);
-    }  
-  }
-  function removeItem(id) {
-    let p = cartItems.filter(function(product) {
-    return product.id !== id;});
-    cartItems = p;
-    drawList();  
-  }
-  function showAlert(message, type) {
-            let alertType = "alert-" + type;
-            let alertElement = document.createElement('div');
-            alertElement.classList.add('alert', alertType, 'alert-dismissible', 'fade', 'show');
-            alertElement.setAttribute('role', 'alert');
-            alertElement.innerHTML = message + `
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                
-            `;
-
-            document.getElementById('alertContainer').appendChild(alertElement);
-
-            setTimeout(function() {
-                let bsAlert = new bootstrap.Alert(alertElement);
-                bsAlert.close();
-            }, 1500);
-        }
-function goToCheckout(){     
-    // Create a form element
-    var form = document.createElement('form');
-
-    // Set the form attributes
-    form.setAttribute('method', 'post');
-    form.setAttribute('action', '/checkout'); // Replace with your target URL
-
-    // Create an input element
-    var input = document.createElement('input');
-    input.setAttribute('type', 'hidden');
-    input.setAttribute('name', 'products'); // Replace with your parameter name
-    input.setAttribute('value', JSON.stringify(cartItems)); // Replace with your parameter value
-
-    // Append the input to the form
-    form.appendChild(input);
-
-    // Append the form to the body
-    document.body.appendChild(form);
-
-    // Submit the form
-    form.submit();
-
-}
-function generateItem(product){
-  let a = `
-<li class="row mx-0 mb-4 align-items-center">
-                  <button
-                    type="button"
-                    class="btn-close btn-sm"
-                    onClick="removeItem(`;
-                    let abis = `);"
-                    aria-label="Remove"
-                  ></button>
-                  <a href="#" class="col-2" style="padding-left: 0 !important">
-                    <img
-                      src="
-`;
-let b = `
-                "
-                      alt="Product"
-                      class="list-snap-img"
-                    />
-                  </a>
-                  <div class="col" style="padding-right: 0 !important">
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <p class="h6 mb-1">
-`;
-let c = `                              
-                              
-                            </p>
-
-                            <div class="post-meta font-small">
-                              <p class="me-3 text-black-50">`;
-let d = `</p>
-                            </div>
-                          </td>
-                          <td><div style="width: 4px"></div></td>
-                          <td class="al-right pl-6">
-                            <div class="container">
-                              <h5>
-`;
-let e = ` 
-                              </h5>
-                              <div class="cart-controls justify-content-end">
-                                <button
-                                  class="btn btn-secondary btn-ad-rem-cart"
-                                  type="button"
-                                  id="subtractButton"
-                                  onClick="reduceItem(`;
-let f = `)"
-                                >
-                                  -
-                                </button>
-
-                                <input
-                                  type="text"
-                                  class="form-control text-center input-quantity"
-                                  value="`;
-let g = `"
-                                  id="quantity"
-                                  readonly
-                                />
-
-                                <button
-                                  class="btn btn-secondary btn-ad-rem-cart"
-                                  type="button"
-                                  id="addButton"
-                                  onClick="increaseItem(`;
-let h = `)"
-                                >
-                                  +
-                                </button>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </li>
-`;
-return a + product.id + abis + product.thumbnail + b + product.brand + " | " + product.title + c + formatCurrency(product.price) + d + formatCurrency(product.price * product.amount) + e + product.id + f + product.amount + g + product.id + h;
-}
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    }).format(amount);
-}
-</script> 
 <!-- offcanvas cart -->
 <div
   class="offcanvas offcanvas-end"
@@ -242,52 +46,292 @@ function formatCurrency(amount) {
   <div class="container">
    
 
-    <div class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-      {% for p in products %}
-      <div class="col">
-        <div class="card shadow-sm mb-4 d-flex flex-column">
-          <div class="card-img-container">
-            <img
-            src={{ p.thumbnail }} 
-            class="bd-placeholder-img card-img-top"
-            width="100%"
-            height="auto"
-            aria-label="Placeholder: Thumbnail"
-            preserveAspectRatio="xMidYMid slice"
-            focusable="false"
-          />
-        </div>
-          
-          <div class="card-body">
-            <p class="card-vol">{{ p.brand }}</p>
-            <p class="card-title">{{ p.title }}</p>
-
-            <div class="d-flex justify-content-between align-items-center rel">
-              <p class="card-price">{{ p.priceStr }}</p>
-              <small class="text-body-secondary row">
-                <div class="btn-group">
-                  <button
-                    type="button"
-                    class="btn btn-secondary btn-sm"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight"
-                    aria-controls="cart"
-                    onclick="addItem({{ p }})"
-                  >
-                    Agregar al carro
-                  </button>
-                </div>
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-      
+    <div id="main-container" class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
       
     </div>
   </div>
 </section>
 
+<script>
+  let cartItems = [];
+  let productList = [];
+  let searchInput = document.getElementById('search-input');
 
-{% endblock %}
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    searchInput.classList.remove('d-none');
+
+    let dataElement = document.getElementById('data');
+    
+    let data = JSON.parse(dataElement.textContent);
+    for (let i = 0; i < data.length; i++) {
+      productList.push(data[i]);     
+    }
+    console.log(productList);
+    drawGrid(productList);
+  });
+
+  searchInput.addEventListener('input', function(event) {
+  const inputValue = event.target.value;
+
+  if (inputValue == "") {
+    drawGrid(productList);
+  } else {
+    drawGrid(filterProducts(productList,inputValue));
+  }
+
+  });
+
+
+  function filterProducts(products, keyword) {
+  keyword = keyword.toLowerCase();
+  return products.filter(product => 
+    product.title.toLowerCase().includes(keyword) || 
+    product.brand.toLowerCase().includes(keyword)
+  );
+}
+  function addItem(id) {
+    product = productList.find(product => product.id === id);
+    inCart = false;
+    for (let j = 0; j < cartItems.length; j++) {
+      const p = cartItems[j];
+      if (product.id == p.id) {
+        increaseItem(p.id);
+        inCart = true;
+        break;
+      }   
+    }
+    if (inCart == false) {
+      product.amount = 1;
+      cartItems.push(product);
+    }
+    inCart = false;
+    drawList();
+      
+  }
+  function drawGrid(products){
+    let gridHTML = "";
+    for (let i = 0; i < products.length; i++) {
+      const p = products[i];
+      pStr = "{{products[" + i + "]}}";
+      gridHTML += (`
+        <div class="col">
+          <div class="card shadow-sm mb-4 d-flex flex-column">
+            <div class="card-img-container">
+              <img
+              src=${p.thumbnail} 
+              class="bd-placeholder-img card-img-top"
+              width="100%"
+              height="auto"
+              aria-label="Placeholder: Thumbnail"
+              preserveAspectRatio="xMidYMid slice"
+              focusable="false"
+            />
+          </div>
+            
+            <div class="card-body">
+              <p class="card-vol">${p.brand}</p>
+              <p class="card-title">${p.title}</p>
+
+              <div class="d-flex justify-content-between align-items-center rel">
+                <p class="card-price">${p.priceStr}</p>
+                <small class="text-body-secondary row">
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary btn-sm"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#offcanvasRight"
+                      aria-controls="cart"
+                      onclick="addItem(${p.id})"
+                    >
+                      Agregar al carro
+                    </button>
+                  </div>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        `);
+      
+    }
+    document.querySelector('#main-container').innerHTML =  gridHTML;
+  }
+  function drawList(){
+    let listHTML = "";
+    let total = 0;
+    let cartUnits = 0;
+      for (let i = 0; i < cartItems.length; i++) {
+        listHTML += generateItem(cartItems[i]);  
+        total += cartItems[i].price * cartItems[i].amount;
+        cartUnits += cartItems[i].amount;
+      }
+      
+      let itemsStr = (cartUnits == 1) ? "1 item en el carro": cartUnits + " items en el carro";
+      document.querySelector('#cart-body').innerHTML = listHTML;
+      document.querySelector('#order-total').innerHTML = formatCurrency(total);
+      document.querySelector('#items-total').innerHTML = itemsStr;
+      document.querySelector('#badge-container').innerHTML = (cartUnits > 0) ?
+      `<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">
+                    ${cartUnits}</span>` : "";
+  }
+  function increaseItem(id) {
+      let p = cartItems.find(function(product) {
+      return product.id === id;});
+      if(p.amount < p.stock){
+        p.amount++;
+        drawList();
+      }
+      else {
+        showAlert("Llegaste al límite de stock dispnible.", "info");
+      }   
+    }
+  function reduceItem(id) {
+    let p = cartItems.find(function(product) {
+    return product.id === id;});
+    if(p.amount > 1){
+      p.amount--;
+      drawList();
+    } else {
+      removeItem(id);
+    }  
+  }
+  function removeItem(id) {
+    let p = cartItems.filter(function(product) {
+    return product.id !== id;});
+    cartItems = p;
+    drawList();  
+  }
+  function showAlert(message, type) {
+              let alertType = "alert-" + type;
+              let alertElement = document.createElement('div');
+              alertElement.classList.add('alert', alertType, 'alert-dismissible', 'fade', 'show');
+              alertElement.setAttribute('role', 'alert');
+              alertElement.innerHTML = message + `
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  
+              `;
+
+              document.getElementById('alertContainer').appendChild(alertElement);
+
+              setTimeout(function() {
+                  let bsAlert = new bootstrap.Alert(alertElement);
+                  bsAlert.close();
+              }, 1500);
+          }
+  function goToCheckout(){
+      // Create a form element
+      var form = document.createElement('form');
+
+      // Set the form attributes
+      form.setAttribute('method', 'post');
+      form.setAttribute('action', '/checkout'); // Replace with your target URL
+
+      // Create an input element
+      var input = document.createElement('input');
+      input.setAttribute('type', 'hidden');
+      input.setAttribute('name', 'products'); // Replace with your parameter name
+      input.setAttribute('value', JSON.stringify(cartItems)); // Replace with your parameter value
+
+      // Append the input to the form
+      form.appendChild(input);
+
+      // Append the form to the body
+      document.body.appendChild(form);
+
+      // Submit the form
+      form.submit();
+
+  }
+  function generateItem(product){
+    let a = `
+  <li class="row mx-0 mb-4 align-items-center">
+                    <button
+                      type="button"
+                      class="btn-close btn-sm"
+                      onClick="removeItem(`;
+                      let abis = `);"
+                      aria-label="Remove"
+                    ></button>
+                    <a href="#" class="col-2" style="padding-left: 0 !important">
+                      <img
+                        src="
+  `;
+  let b = `
+                  "
+                        alt="Product"
+                        class="list-snap-img"
+                      />
+                    </a>
+                    <div class="col" style="padding-right: 0 !important">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <p class="h6 mb-1">
+  `;
+  let c = `                              
+                                
+                              </p>
+
+                              <div class="post-meta font-small">
+                                <p class="me-3 text-black-50">`;
+  let d = `</p>
+                              </div>
+                            </td>
+                            <td><div style="width: 4px"></div></td>
+                            <td class="al-right pl-6">
+                              <div class="container">
+                                <h5>
+  `;
+  let e = ` 
+                                </h5>
+                                <div class="cart-controls justify-content-end">
+                                  <button
+                                    class="btn btn-secondary btn-ad-rem-cart"
+                                    type="button"
+                                    id="subtractButton"
+                                    onClick="reduceItem(`;
+  let f = `)"
+                                  >
+                                    -
+                                  </button>
+
+                                  <input
+                                    type="text"
+                                    class="form-control text-center input-quantity"
+                                    value="`;
+  let g = `"
+                                    id="quantity"
+                                    readonly
+                                  />
+
+                                  <button
+                                    class="btn btn-secondary btn-ad-rem-cart"
+                                    type="button"
+                                    id="addButton"
+                                    onClick="increaseItem(`;
+  let h = `)"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+  `;
+  return a + product.id + abis + product.thumbnail + b + product.brand + " | " + product.title + c + formatCurrency(product.price) + d + formatCurrency(product.price * product.amount) + e + product.id + f + product.amount + g + product.id + h;
+  }
+  function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+      }).format(amount);
+  }
+</script> 
+{% endblock main %}

@@ -22,14 +22,12 @@ def index():
             cursor.execute("""
             SELECT id, brand, title, price, stock, thumbnail
             FROM "public"."products"
-            WHERE "visible" = true AND "stock" > 0 LIMIT 100""")
-            # Fetch all rows as a list of tuples
+            WHERE "visible" = true AND "stock" > 0""")
+            
             rows = cursor.fetchall()
 
-            # Get column names from cursor description
             columns = [desc[0] for desc in cursor.description]
 
-            # Convert each row into a dictionary
             for row in rows:
                 product_dict = dict(zip(columns, row))
                 products.append(product_dict)
@@ -69,13 +67,10 @@ def purchase():
             with connection.cursor() as cursor:
                 query = "SELECT id, brand, title, price, stock, thumbnail FROM products WHERE id IN %s"
                 cursor.execute(query, (tuple(ids),))
-                # Fetch all rows as a list of tuples
+                
                 rows = cursor.fetchall()
-
-                # Get column names from cursor description
                 columns = [desc[0] for desc in cursor.description]
 
-                # Convert each row into a dictionary
                 for row in rows:
                     product_dict = dict(zip(columns, row))
                     product_dict['price'] = float(product_dict['price'])
@@ -95,11 +90,22 @@ def purchase():
         
 
     return render_template("success.html")
-""" only temp to make the html """
+
+@app.route("/admin", methods=["GET"])
+def success():
+    return render_template("admin.html")
+@app.route("/orders", methods=["GET"])
+def orders():
+    return render_template("orders.html")
+"""
 @app.route("/success", methods=["GET"])
 def success():
     return render_template("success.html")
-        
+
+@app.route("/failed", methods=["GET"])
+def failed():
+    return render_template("failed.html")
+ """        
 def format_currency(amount):
     locale.setlocale(locale.LC_ALL, '')
 
@@ -137,7 +143,6 @@ def get_client(name, email, phone):
                 if existing_client_id:
                     return existing_client_id[0]
                 else:
-                    # Email doesn't exist, add a new client
                     cursor.execute("INSERT INTO clients (name, email, phone) VALUES (%s, %s, %s) RETURNING id", (name, email, phone))
                     new_client_id = cursor.fetchone()[0]
                     connection.commit()

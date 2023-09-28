@@ -46,7 +46,7 @@
   <div class="container">
    
 
-    <div id="main-container" class="row row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+    <div id="main-container" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
       
     </div>
   </div>
@@ -133,26 +133,26 @@
               <p class="card-vol">${p.brand}</p>
               <p class="card-title">${p.title}</p>
 
-              <div class="d-flex justify-content-between align-items-center rel">
-                <p class="card-price">${p.priceStr}</p>
-                <small class="text-body-secondary row">
-                  <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn btn-secondary btn-sm"
-                      data-bs-toggle="offcanvas"
-                      data-bs-target="#offcanvasRight"
-                      aria-controls="cart"
-                      onclick="addItem(${p.id})"
-                    >
-                      Agregar al carro
-                    </button>
-                  </div>
-                </small>
-              </div>
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center rel">
+              <p class="card-price">${p.priceStr}</p>
+              <small class="text-body-secondary row">
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm btn-block"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight"
+                    aria-controls="cart"
+                    onclick="addItem(${p.id})"
+                  >
+                    Agregar al carro
+                  </button>
+                </div>
+              </small>
             </div>
           </div>
         </div>
+      </div>
         `);
       
     }

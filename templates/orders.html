@@ -1,0 +1,210 @@
+{% extends "adm_layout.html" %} {% block title %} Ventas {% endblock %} {% block
+main %}
+
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Ventas</h1>
+</div>
+<div class="row p-5 pb-0">
+  <div class="col-lg-3 col-md-4 mb-3">
+    <select class="form-select">
+      <option disabled selected>Fechas</option>
+      <option>Hoy</option>
+      <option>Esta semana</option>
+      <option>Este mes</option>
+      <option>Todas</option>
+    </select>
+  </div>
+  <div class="col-lg-3 col-md-4 mb-3">
+    <select class="form-select">
+      <option disabled selected>Estado</option>
+      <option>Pendientes</option>
+      <option>Pagadas</option>
+      <option>Finalizadas</option>
+      <option>Canceladas</option>
+      <option>Todas</option>
+    </select>
+  </div>
+  <div class="col-lg-6 col-md-4">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar..."
+        aria-label="Search"
+      />
+      <button class="btn btn-outline-secondary" type="button">Buscar</button>
+    </div>
+  </div>
+</div>
+<div class="row p-5">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Detalles</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Total</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"><a href="#">#1</a></th>
+        <td>
+          <button class="toggle-button btn btn-dark btn-sm">+</button>
+        </td>
+        <td>2023-09-28</td>
+        <td>Client A</td>
+        <td>$23.763,00</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <div class="state-circle me-2 bg-warning"></div>
+            <span>Pendiente</span>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-secondary btn-sm">
+            Pagado
+          </button>
+          <button type="button" class="btn btn-outline-danger btn-sm">
+            Cancelar
+          </button>
+        </td>
+      </tr>
+      <tr class="product-row">
+        <td colspan="7">
+          <table class="product-table">
+            <tr>
+              <td>3x Apple iphone</td>
+              <td>$5.250,00</td>
+            </tr>
+            <tr>
+              <td>1x Docena de naranjas</td>
+              <td>$1.344,00</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#">#1</a></th>
+        <td>
+          <button class="toggle-button btn btn-dark btn-sm">+</button>
+        </td>
+        <td>2023-09-28</td>
+        <td>Client A</td>
+        <td>$23.763,00</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <div class="state-circle me-2 bg-success"></div>
+            <span>Completada</span>
+          </div>
+        </td>
+        <td>
+          
+        </td>
+      </tr>
+      <tr class="product-row">
+        <td colspan="7">
+          <table class="product-table">
+            <tr>
+              <td>3x Apple iphone</td>
+              <td>$5.250,00</td>
+            </tr>
+            <tr>
+              <td>1x Docena de naranjas</td>
+              <td>$1.344,00</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#">#1</a></th>
+        <td>
+          <button class="toggle-button btn btn-dark btn-sm">+</button>
+        </td>
+        <td>2023-09-28</td>
+        <td>Client A</td>
+        <td>$23.763,00</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <div class="state-circle me-2 bg-secondary"></div>
+            <span>Pagado</span>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-success btn-sm">
+            Finalizar
+          </button>
+          <button type="button" class="btn btn-outline-danger btn-sm">
+            Cancelar
+          </button>
+        </td>
+      </tr>
+      <tr class="product-row">
+        <td colspan="7">
+          <table class="product-table">
+            <tr>
+              <td>3x Apple iphone</td>
+              <td>$5.250,00</td>
+            </tr>
+            <tr>
+              <td>1x Docena de naranjas</td>
+              <td>$1.344,00</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#">#1</a></th>
+        <td>
+          <button class="toggle-button btn btn-dark btn-sm">+</button>
+        </td>
+        <td>2023-09-28</td>
+        <td>Client A</td>
+        <td>$23.763,00</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <div class="state-circle me-2 bg-secondary"></div>
+            <span>Pagado</span>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-success btn-sm">
+            Finalizar
+          </button>
+          <button type="button" class="btn btn-outline-danger btn-sm">
+            Cancelar
+          </button>
+        </td>
+      </tr>
+      <tr class="product-row">
+        <td colspan="7">
+          <table class="product-table">
+            <tr>
+              <td><small class="text-black-50">3x Apple iphone</small></td>
+              <td><small class="text-black-50">$5.250,00</small></td>
+            </tr>
+            <tr>
+              <td><small class="text-black-50">1x Docena de naranjas</small></td>
+              <td><small class="text-black-50">$1.344,00</small></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $(".toggle-button").click(function () {
+      $(this).closest("tr").next(".product-row").toggle();
+    });
+  });
+</script>
+
+{% endblock %}

@@ -34,6 +34,12 @@ body {
   font-weight: 600;
   color: #bb2a9c;
   margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card {
+  height: 95%;
 }
 .card-price {
   font-size: 1.35rem;
@@ -122,4 +128,28 @@ body {
 .carousel-control-prev,
 .carousel-control-next {
   bottom: 30%;
+}
+.state-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: green; /* Change the color as needed */
+}
+.product-row {
+  display: none;
+  width: 100%;
+  
+}
+.product-table {
+  width: 50%;
+  
+}
+
+.product-table td {
+  padding: 1px;
+  text-align: left;
+}
+
+.product-table td:last-child {
+  text-align: right;
 }

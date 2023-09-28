@@ -140,5 +140,5 @@ def get_client(name, email, phone):
                     return new_client_id
     
 if __name__ == '__main__':
-    app.debug = True
+    #app.debug = True
     app.run()

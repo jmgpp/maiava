@@ -94,7 +94,11 @@ def purchase():
         order_id = generate_order(client_id, products)
         
 
-    return redirect("/")
+    return render_template("success.html")
+""" only temp to make the html """
+@app.route("/success", methods=["GET"])
+def success():
+    return render_template("success.html")
         
 def format_currency(amount):
     locale.setlocale(locale.LC_ALL, '')
@@ -140,5 +144,5 @@ def get_client(name, email, phone):
                     return new_client_id
     
 if __name__ == '__main__':
-    #app.debug = True
+    app.debug = True
     app.run()

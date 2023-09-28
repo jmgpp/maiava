@@ -56,8 +56,9 @@ block main %}
           <div class="container al-right pt-0">
             <small id="items-total">0 items en el carro</small>
             <h4><span class="h6 text-indigo">Total </span><span id="order-total"></span></h4>
-            <button class="btn btn-primary" type="button" onclick="completeOrder();">
+            <button class="btn btn-primary" type="button"  onclick="completeOrder(this);">
               Finalizar orden
+              <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
             </button>
           </div>
         </d>
@@ -66,6 +67,9 @@ block main %}
     <!-- End of column -->
   </div>
 </form>
+
+
+
 <script>
   let cartItems = [];
   let cartUnits = 0;
@@ -143,7 +147,8 @@ function increaseItem(id) {
                 bsAlert.close();
             }, 1500);
 }
-function completeOrder(){
+function completeOrder(button){
+  
   if (cartItems.length == 0 || cartUnits < 1) {
     showAlert("El carrito está vacío", "danger");
     return false;
@@ -163,6 +168,9 @@ function completeOrder(){
       return false;
     }
   }
+  const spinner = button.querySelector('.spinner-border');
+  spinner.classList.remove('d-none');
+  
   var input = document.createElement('input');
   input.setAttribute('type', 'hidden');
   input.setAttribute('name', 'products'); 

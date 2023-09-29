@@ -152,6 +152,10 @@ def update_orders():
     if request.method == "POST":
         data_id = request.form.get("id")
         data_status = request.form.get("status")
+
+        if int(data_status) == 4:
+            print("reaches here")
+            cancel_order(data_id)
         
         connection = psycopg2.connect(POSTGRESQL_URI)
         with connection:
@@ -178,6 +182,32 @@ def success():
 def failed():
     return render_template("failed.html")
  """        
+
+def cancel_order(order_id):
+    connection = psycopg2.connect(POSTGRESQL_URI)
+    cursor = connection.cursor()
+
+    try:
+        # Retrieve order items and their amounts
+        cursor.execute('SELECT product_id, amount FROM "order-items" WHERE order_id = %s', (order_id,))
+        order_items = cursor.fetchall()
+
+        # Restore stock
+        for product_id, amount in order_items:
+            cursor.execute("UPDATE products SET stock = stock + %s WHERE id = %s", (amount, product_id))
+
+        # Commit the transaction
+        connection.commit()
+
+    except Exception as e:
+        connection.rollback()
+        print(f"Error: {e}")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+
 def format_currency(amount):
     locale.setlocale(locale.LC_ALL, '')
 
@@ -198,7 +228,7 @@ def generate_order(client_id, products):
                 for p in products:
                     cursor.execute("INSERT INTO \"order-items\" (order_id, product_id, price, amount) VALUES (%s, %s, %s, %s)", (order_id, p['id'], p['price'], p['amount']))
 
-                    cursor.execute("UPDATE products SET stock = stock - %s", (p['amount'],))
+                    cursor.execute("UPDATE products SET stock = stock - %s WHERE id = %s", (p['amount'],p['id']))
 
             connection.commit()
 

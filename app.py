@@ -94,9 +94,57 @@ def purchase():
 @app.route("/admin", methods=["GET"])
 def success():
     return render_template("admin.html")
+
 @app.route("/orders", methods=["GET"])
 def orders():
-    return render_template("orders.html")
+    orders = []
+    connection = psycopg2.connect(POSTGRESQL_URI)
+    with connection:
+        with connection.cursor() as cursor:
+            query = """
+                        SELECT orders.id as id, orders.date as date, clients.name as client, orders.total as total, "order-status".status as status
+                        FROM orders 
+                        JOIN clients ON orders.client_id = clients.id
+                        JOIN "order-status" ON orders.status_id = "order-status".id
+                        ORDER BY id DESC;
+                    """
+            cursor.execute(query)
+            
+            rows = cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]
+
+            for row in rows:
+                order_dict = dict(zip(columns, row))
+                order_dict['total'] = float(order_dict['total'])
+                orders.append(order_dict)
+    cursor.close()
+    connection.close()
+
+
+    return render_template("orders.html", orders=orders)
+
+@app.route("/update_orders", methods=["POST"])
+def update_orders():
+    if request.method == "POST":
+        data_id = request.form.get("id")
+        data_status = request.form.get("status")
+        
+        connection = psycopg2.connect(POSTGRESQL_URI)
+        with connection:
+            with connection.cursor() as cursor:
+                query = """
+                            UPDATE orders
+                            SET status_id = %s
+                            WHERE id = %s;
+
+                        """
+                cursor.execute(query, (data_status, data_id))
+        connection.commit()
+
+
+        return redirect('/orders')
+    
+
 """
 @app.route("/success", methods=["GET"])
 def success():

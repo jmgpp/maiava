@@ -171,7 +171,7 @@ function completeOrder(button){
   const spinner = button.querySelector('.spinner-border');
   spinner.classList.remove('d-none');
   
-  var input = document.createElement('input');
+  let input = document.createElement('input');
   input.setAttribute('type', 'hidden');
   input.setAttribute('name', 'products'); 
   input.setAttribute('value', JSON.stringify(cartItems));

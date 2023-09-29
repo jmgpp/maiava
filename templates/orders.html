@@ -1,6 +1,6 @@
 {% extends "adm_layout.html" %} {% block title %} Ventas {% endblock %} {% block
 main %}
-
+<div id="data" style="display: none;">{{ orders | tojson | safe }}</div>
 <div
   class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
 >
@@ -38,173 +38,178 @@ main %}
     </div>
   </div>
 </div>
-<div class="row p-5">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Detalles</th>
-        <th scope="col">Fecha</th>
-        <th scope="col">Cliente</th>
-        <th scope="col">Total</th>
-        <th scope="col">Estado</th>
-        <th scope="col">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row"><a href="#">#1</a></th>
-        <td>
-          <button class="toggle-button btn btn-dark btn-sm">+</button>
-        </td>
-        <td>2023-09-28</td>
-        <td>Client A</td>
-        <td>$23.763,00</td>
-        <td>
-          <div class="d-flex align-items-center">
-            <div class="state-circle me-2 bg-warning"></div>
-            <span>Pendiente</span>
-          </div>
-        </td>
-        <td>
-          <button type="button" class="btn btn-secondary btn-sm">
-            Pagado
-          </button>
-          <button type="button" class="btn btn-outline-danger btn-sm">
-            Cancelar
-          </button>
-        </td>
-      </tr>
-      <tr class="product-row">
-        <td colspan="7">
-          <table class="product-table">
-            <tr>
-              <td>3x Apple iphone</td>
-              <td>$5.250,00</td>
-            </tr>
-            <tr>
-              <td>1x Docena de naranjas</td>
-              <td>$1.344,00</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row"><a href="#">#1</a></th>
-        <td>
-          <button class="toggle-button btn btn-dark btn-sm">+</button>
-        </td>
-        <td>2023-09-28</td>
-        <td>Client A</td>
-        <td>$23.763,00</td>
-        <td>
-          <div class="d-flex align-items-center">
-            <div class="state-circle me-2 bg-success"></div>
-            <span>Completada</span>
-          </div>
-        </td>
-        <td>
-          
-        </td>
-      </tr>
-      <tr class="product-row">
-        <td colspan="7">
-          <table class="product-table">
-            <tr>
-              <td>3x Apple iphone</td>
-              <td>$5.250,00</td>
-            </tr>
-            <tr>
-              <td>1x Docena de naranjas</td>
-              <td>$1.344,00</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row"><a href="#">#1</a></th>
-        <td>
-          <button class="toggle-button btn btn-dark btn-sm">+</button>
-        </td>
-        <td>2023-09-28</td>
-        <td>Client A</td>
-        <td>$23.763,00</td>
-        <td>
-          <div class="d-flex align-items-center">
-            <div class="state-circle me-2 bg-secondary"></div>
-            <span>Pagado</span>
-          </div>
-        </td>
-        <td>
-          <button type="button" class="btn btn-success btn-sm">
-            Finalizar
-          </button>
-          <button type="button" class="btn btn-outline-danger btn-sm">
-            Cancelar
-          </button>
-        </td>
-      </tr>
-      <tr class="product-row">
-        <td colspan="7">
-          <table class="product-table">
-            <tr>
-              <td>3x Apple iphone</td>
-              <td>$5.250,00</td>
-            </tr>
-            <tr>
-              <td>1x Docena de naranjas</td>
-              <td>$1.344,00</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row"><a href="#">#1</a></th>
-        <td>
-          <button class="toggle-button btn btn-dark btn-sm">+</button>
-        </td>
-        <td>2023-09-28</td>
-        <td>Client A</td>
-        <td>$23.763,00</td>
-        <td>
-          <div class="d-flex align-items-center">
-            <div class="state-circle me-2 bg-secondary"></div>
-            <span>Pagado</span>
-          </div>
-        </td>
-        <td>
-          <button type="button" class="btn btn-success btn-sm">
-            Finalizar
-          </button>
-          <button type="button" class="btn btn-outline-danger btn-sm">
-            Cancelar
-          </button>
-        </td>
-      </tr>
-      <tr class="product-row">
-        <td colspan="7">
-          <table class="product-table">
-            <tr>
-              <td><small class="text-black-50">3x Apple iphone</small></td>
-              <td><small class="text-black-50">$5.250,00</small></td>
-            </tr>
-            <tr>
-              <td><small class="text-black-50">1x Docena de naranjas</small></td>
-              <td><small class="text-black-50">$1.344,00</small></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div id="orders-table-container" class="row p-5">
+  <!-- orders table -->
 </div>
 
 <script>
+  let orders = [];
   $(document).ready(function () {
     $(".toggle-button").click(function () {
       $(this).closest("tr").next(".product-row").toggle();
     });
   });
+  document.addEventListener('DOMContentLoaded', function() {
+    let dataElement = document.getElementById('data');
+    let data = JSON.parse(dataElement.textContent);
+    for (let i = 0; i < data.length; i++) {
+      orders.push(data[i]);     
+    }
+    let tableContainer = document.getElementById('orders-table-container');
+    tableContainer.innerHTML = drawOrders(orders);
+
+  });
+
+  function drawOrders(orders){
+    let tableHTML = `
+    <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"><small>ID</small></th>
+        <th scope="col"><small>Detalles</small></th>
+        <th scope="col"><small>Fecha</small></th>
+        <th scope="col"><small>Cliente</small></th>
+        <th scope="col" class="al-right"><small>Total</small></th>
+        <th scope="col"><small>Estado</small></th>
+        <th scope="col"><small>Acciones</small></th>
+      </tr>
+    </thead>
+    <tbody>`;
+    let tableEndHTML = `</tbody></table>`;
+
+    for (let i = 0; i < orders.length; i++) {
+        const o = orders[i];
+        tableHTML += ` <tr>
+        <th><small>#${o.id}</small></th>
+        <td class="text-center">
+          <button class="toggle-button btn btn-dark btn-sm">+</button>
+        </td>
+        <td>${formatDate(o.date)}</td>
+        <td>${o.client}</td>
+        <td class="al-right">${formatCurrency(o.total)}</td>
+        ${stateHTML(o.status, o.id)}
+      </tr>
+      <tr class="product-row">
+        <td colspan="7">
+          <table class="product-table">
+            <tr>
+              <td>3x Apple iphone</td>
+              <td>$5.250,00</td>
+            </tr>
+            <tr>
+              <td>1x Docena de naranjas</td>
+              <td>$1.344,00</td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+        
+    }
+    tableHTML += tableEndHTML;
+
+  return tableHTML;
+
+
+  }
+
+function stateHTML(status, id){
+    let dict = {};
+    switch (status) {
+        case 'pending':
+            dict['status'] = 'Pendiente';
+            dict['bgColor'] = 'bg-warning';
+            dict['buttons'] = `
+            <button type="button" onclick="updateOrder(${id},2);" class="btn btn-secondary btn-sm">
+            Pagado
+            </button>
+            <button type="button" onclick="updateOrder(${id},4);"  class="btn btn-outline-danger btn-sm">
+            Cancelar
+            </button>
+            `;
+            break;
+        case 'paid':
+            dict['status'] = 'Pagado';
+            dict['bgColor'] = 'bg-secondary';
+            dict['buttons'] = `
+            <button type="button" onclick="updateOrder(${id},3);" class="btn btn-success btn-sm">
+            Finalizar
+            </button>
+            <button type="button" onclick="updateOrder(${id},4);" class="btn btn-outline-danger btn-sm">
+            Cancelar
+            </button>
+            `;
+            break;
+        case 'completed':
+            dict['status'] = 'Finalizada';
+            dict['bgColor'] = 'bg-success';
+            dict['buttons'] = "";
+            break;
+        case 'cancelled':
+            dict['status'] = 'Cancelada';
+            dict['bgColor'] = 'bg-danger';
+            dict['buttons'] = "";
+            break;
+    }
+
+    return `<td>
+          <div class="d-flex align-items-center">
+            <div class="state-circle me-2 ${dict.bgColor}"></div>
+            <span>${dict.status}</span>
+          </div>
+        </td>
+        <td>
+          ${dict.buttons}
+        </td>`;
+}
+
+function updateOrder(id, status){
+    let form = document.createElement('form');
+    form.setAttribute('method', 'POST');
+    form.setAttribute('action', '/update_orders');
+    let input_id = document.createElement('input');
+    input_id.setAttribute('type', 'hidden');
+    input_id.setAttribute('name', 'id'); 
+    input_id.setAttribute('value', id);
+
+    let input_st = document.createElement('input');
+    input_st.setAttribute('type', 'hidden');
+    input_st.setAttribute('name', 'status'); 
+    input_st.setAttribute('value', status);
+
+    form.appendChild(input_id);
+    form.appendChild(input_st);
+
+    document.body.appendChild(form);
+    form.submit();
+
+}
+
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const months = [
+    "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+    "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+  ];
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(amount);
+}
+
+
+
+
+
+
+
 </script>
 
 {% endblock %}

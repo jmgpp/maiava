@@ -1,0 +1,205 @@
+{% extends "adm_layout.html" %} {% block title %} Productos {% endblock %} 
+{% block main %}
+    <div id="data" style="display: none;">{{ products | tojson | safe }}</div>
+    <!-- offcanvas new prod -->
+    <div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="offcanvasRight"
+    aria-labelledby="offcanvasRightLabel"
+    >
+    <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Agregar producto</h5>
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+    ></button>
+    </div>
+    <div class="offcanvas-body">
+        <form id="add-prod-form" class="px-3">
+            <div class="mb-3">
+                <label for="image" class="form-label">Imagen</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)" required>
+              </div>
+              <img id="preview" src="#" alt="Image Preview" style="max-width: 200px; display: none;">
+            <div class="mb-3">
+              <label for="brand" class="form-label">Marca</label>
+              <input type="text" class="form-control" id="brand" name="brand" required>
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="price" class="form-label">Precio</label>
+                    <input type="number" class="form-control" id="price" name="price" required>
+                </div>
+                <div class="col">
+                    <label for="stock" class="form-label">Stock</label>
+                    <input type="number" class="form-control" id="stock" name="stock" required>
+                  </div>
+            </div>
+            
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="visible" name="visible" checked>
+              <label class="form-check-label" for="visible">Visible</label>
+            </div>
+            <input type="hidden" id="imageURL" name="imageURL">
+            <button type="button" class="btn btn-primary" onclick="addProduct()">Guardar</button>
+          </form>
+    </div>
+    </div>
+
+    <!-- end of new prod -->
+
+
+
+    <div
+      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+    >
+      <h1 class="h2">Productos</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasRight">Agregar producto</button>
+        </div>
+      </div>
+    </div>
+    <div class="row p-5 pb-0">
+        <div id="products-table-container" class="row p-5">
+            <!-- products table -->
+        </div>
+    </div>
+
+
+<!-- SCRIPTS -->
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-storage.js";
+    
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIm5AoRgpraN61gdOtBxjdE1Z4QqHDvWY",
+      authDomain: "maia-project-4900f.firebaseapp.com",
+      projectId: "maia-project-4900f",
+      storageBucket: "maia-project-4900f.appspot.com",
+      messagingSenderId: "961588321655",
+      appId: "1:961588321655:web:2719142743efdf57e4d572"
+    };
+  
+    // Initialize Firebase
+    window.app = initializeApp(firebaseConfig);
+    window.ref = ref;
+    window.storage = getStorage();
+    window.uploadBytes = uploadBytes;
+    window.getDownloadURL = getDownloadURL;
+  </script>
+    <script>
+    
+    let products = [];
+    function addProduct() {
+    const fileInput = document.getElementById('image');
+    const file = fileInput.files[0];
+
+    if (file) {
+        
+        const storageRef = window.ref(window.storage, 'product_images/' + file.name);
+
+        window.uploadBytes(storageRef, file).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+
+            // Get the download URL and set it in the hidden input
+            window.getDownloadURL(storageRef).then((url) => {
+                document.getElementById('imageURL').value = url;
+
+                // Now you can proceed to save the product with the imageURL
+                console.log("Subido al storage");
+            });
+        });
+    } else {
+        alert('Please select an image.');
+    }
+}
+
+function previewImage(event) {
+    const fileInput = event.target;
+    const previewElement = document.getElementById('preview');
+    const previewLabel = document.getElementById('preview-label');
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        previewElement.src = reader.result;
+        previewElement.style.display = 'block';
+    }
+
+    reader.readAsDataURL(file);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    let dataElement = document.getElementById('data');
+    let data = JSON.parse(dataElement.textContent);
+    for (let i = 0; i < data.length; i++) {
+    products.push(data[i]);     
+    }
+    let tableContainer = document.getElementById('products-table-container');
+    tableContainer.innerHTML = drawProducts(products);
+});
+
+
+
+
+
+function drawProducts(products){
+    let prodHTML = `
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">Thumbnail</th>
+            <th scope="col">ID</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Visible</th>
+            <th scope="col">Edit</th>
+            </tr>
+        </thead>
+        <tbody>`;
+            
+    for (let i = 0; i < products.length; i++) {
+        const p = products[i];
+        prodHTML += `
+        <tr>
+            <td>
+                <div class="rounded border p-1" style="max-width: 100px; overflow: hidden;">
+                    <img src="${p.thumbnail}" alt="Thumbnail" style="max-width: 70px; max-height: 70px;">
+                </div>
+            </td>
+            <td>#${p.id}</td>
+            <td>${p.brand}</td>
+            <td>${p.title}</td>
+            <td>${formatCurrency(p.price)}</td>
+            <td>${p.stock}</td>
+            <td>Ocultar</td>
+            <td>Editar</td>
+            </tr>`;
+    }
+    prodHTML += `</tbody></table>`;
+        
+    return prodHTML;
+}
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(amount);
+}
+</script>
+    {% endblock %}
+    

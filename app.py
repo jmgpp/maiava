@@ -147,6 +147,31 @@ def orders():
 
     return render_template("orders.html", orders=orders)
 
+@app.route("/products", methods=["GET"])
+def products():
+    products = []
+    connection = psycopg2.connect(POSTGRESQL_URI)
+    with connection:
+        with connection.cursor() as cursor:
+            query = """
+                        SELECT * FROM products;
+                    """
+            cursor.execute(query)
+            
+            rows = cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]
+
+            for row in rows:
+                prod_dict = dict(zip(columns, row))
+                #prod_dict['visible'] = 1 if prod_dict['visible'] else 0
+                products.append(prod_dict)
+
+    cursor.close()
+    connection.close()
+
+
+    return render_template("products.html", products=products)
+
 @app.route("/update_orders", methods=["POST"])
 def update_orders():
     if request.method == "POST":

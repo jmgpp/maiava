@@ -92,14 +92,7 @@ main %}
       <tr class="product-row">
         <td colspan="7">
           <table class="product-table">
-            <tr>
-              <td>3x Apple iphone</td>
-              <td>$5.250,00</td>
-            </tr>
-            <tr>
-              <td>1x Docena de naranjas</td>
-              <td>$1.344,00</td>
-            </tr>
+            ${drawOrderItems(o.items)}
           </table>
         </td>
       </tr>`;
@@ -112,6 +105,22 @@ main %}
 
   }
 
+function drawOrderItems(items){
+    let itemsHTML = "";
+    for (let i = 0; i < items.length; i++) {
+        const e = items[i];
+
+        itemsHTML += `
+        <tr>
+            <td><small class="text-black-50">${e.amount}x ${e.title}</small></td>
+            <td><small class="text-black-50">${formatCurrency(e.price)}</small></td>
+        </tr>
+        `;
+        
+    }
+
+    return itemsHTML;
+}
 function stateHTML(status, id){
     let dict = {};
     switch (status) {

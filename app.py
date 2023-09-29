@@ -116,7 +116,31 @@ def orders():
             for row in rows:
                 order_dict = dict(zip(columns, row))
                 order_dict['total'] = float(order_dict['total'])
+                items = []
+                items_query = """
+                                SELECT 
+                                    products.id AS id, 
+                                    products.title AS title,
+                                    "order-items".price AS price, 
+                                    "order-items".amount AS amount 
+                                FROM "order-items" 
+                                JOIN products ON "order-items".product_id = products.id 
+                                WHERE order_id = %s
+                            """
+                cursor.execute(items_query, (order_dict['id'],))
+
+                nrows = cursor.fetchall()
+
+                col = [desc[0] for desc in cursor.description]
+
+                for r in nrows:
+                    item_dict = dict(zip(col, r))
+                    items.append(item_dict)
+                
+                order_dict['items'] = items
+                
                 orders.append(order_dict)
+
     cursor.close()
     connection.close()
 

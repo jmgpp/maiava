@@ -8,35 +8,25 @@ main %}
 </div>
 <div class="row p-5 pb-0">
   <div class="col-lg-3 col-md-4 mb-3">
-    <select class="form-select">
-      <option disabled selected>Fechas</option>
-      <option>Hoy</option>
-      <option>Esta semana</option>
-      <option>Este mes</option>
-      <option>Todas</option>
+    <select id="date-filter" class="form-select" onchange="filterByDate();">
+      <option value="0" disabled selected>Fechas</option>
+      <option value="1">Hoy</option>
+      <option value="7">Esta semana</option>
+      <option value="31">Este mes</option>
+      <option value="0">Todas</option>
     </select>
   </div>
   <div class="col-lg-3 col-md-4 mb-3">
-    <select class="form-select">
-      <option disabled selected>Estado</option>
-      <option>Pendientes</option>
-      <option>Pagadas</option>
-      <option>Finalizadas</option>
-      <option>Canceladas</option>
-      <option>Todas</option>
+    <select id="state-filter" class="form-select" onchange="filterByState();">
+      <option value="0" disabled selected>Estado</option>
+      <option value="pending" >Pendientes</option>
+      <option value="paid" >Pagadas</option>
+      <option value="completed" >Finalizadas</option>
+      <option value="cancelled" >Canceladas</option>
+      <option value="0" >Todas</option>
     </select>
   </div>
-  <div class="col-lg-6 col-md-4">
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Buscar..."
-        aria-label="Search"
-      />
-      <button class="btn btn-outline-secondary" type="button">Buscar</button>
-    </div>
-  </div>
+ 
 </div>
 <div id="orders-table-container" class="row p-5">
   <!-- orders table -->
@@ -59,8 +49,37 @@ main %}
     tableContainer.innerHTML = drawOrders(orders);
 
   });
+  function filterByDate(){
+    
+    let days = document.getElementById("date-filter").value;
+    const today = new Date();
+    const old = new Date(today);
+    let tableContainer = document.getElementById('orders-table-container');
+    
+    switch (days) {
+        case '0':
+            tableContainer.innerHTML = drawOrders(orders);
+            break;
+        default:
+            old.setDate(today.getDate() - days);
+            let forders = orders.filter(order => new Date(order.date) > old);
+            tableContainer.innerHTML = drawOrders(forders);
+            break;
+        }
+  }
+  function filterByState(){
+    let tableContainer = document.getElementById('orders-table-container');
+    let state = document.getElementById("state-filter").value;
 
-  function drawOrders(orders){
+    if (state != '0'){
+        forders = orders.filter(order => order.status == state);
+        tableContainer.innerHTML = drawOrders(forders);
+    } else {
+        tableContainer.innerHTML = drawOrders(orders);
+    }
+  }
+
+  function drawOrders(ords){
     let tableHTML = `
     <table class="table">
     <thead>
@@ -77,8 +96,8 @@ main %}
     <tbody>`;
     let tableEndHTML = `</tbody></table>`;
 
-    for (let i = 0; i < orders.length; i++) {
-        const o = orders[i];
+    for (let i = 0; i < ords.length; i++) {
+        const o = ords[i];
         tableHTML += ` <tr>
         <th><small>#${o.id}</small></th>
         <td class="text-center">

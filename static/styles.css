@@ -7,6 +7,11 @@ body {
   color: #000;
   margin-right: 10px;
 }
+@media (min-width: 768px) {
+  .form-signin {
+    max-width: 50%;
+  }
+}
 .alert-container {
     position: fixed;
     top: 15px;

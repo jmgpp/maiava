@@ -92,8 +92,8 @@ def purchase():
     return render_template("success.html")
 
 @app.route("/admin", methods=["GET"])
-def success():
-    return render_template("admin.html")
+def admin():
+    return redirect("/orders")
 
 @app.route("/orders", methods=["GET"])
 def orders():
@@ -346,5 +346,5 @@ def get_client(name, email, phone):
                     return new_client_id
     
 if __name__ == '__main__':
-    app.debug = True
+    #app.debug = True
     app.run()

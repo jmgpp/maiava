@@ -218,6 +218,38 @@ def visible():
       
     return redirect("/products")
 
+@app.route("/edit", methods=["POST"])
+def edit():
+    if request.method == "POST":
+        id = request.form.get("id")
+        title = request.form.get("title")
+        brand = request.form.get("brand")
+        price = request.form.get("price")
+        stock = request.form.get("stock")
+        visible = request.form.get('visible') == 'on'
+        thumb = request.form.get("imageURL")
+
+        connection = psycopg2.connect(POSTGRESQL_URI)
+        with connection:
+            with connection.cursor() as cursor:
+                query = """
+                            UPDATE products
+                            SET title = %s,
+                                brand = %s,
+                                price = %s,
+                                stock = %s,
+                                thumbnail = %s,
+                                visible = %s
+                            WHERE id = %s;
+                        """
+                cursor.execute(query, (title, brand, float(price), int(stock), thumb, visible, id))
+
+                
+                connection.commit()
+        cursor.close()
+        connection.close()
+
+    return redirect("/products")
 
 
 @app.route("/update_orders", methods=["POST"])

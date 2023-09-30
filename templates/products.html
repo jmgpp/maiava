@@ -1,5 +1,6 @@
 {% extends "adm_layout.html" %} {% block title %} Productos {% endblock %} 
 {% block main %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <div id="data" style="display: none;">{{ products | tojson | safe }}</div>
     <!-- offcanvas new prod -->
     <div
@@ -18,7 +19,7 @@
     ></button>
     </div>
     <div class="offcanvas-body">
-        <form id="add-prod-form" class="px-3">
+        <form id="add-prod-form" method="POST" action="/products" class="px-3">
             <div class="mb-3">
                 <label for="image" class="form-label">Imagen</label>
                 <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)" required>
@@ -30,7 +31,7 @@
             </div>
             <div class="mb-3">
               <label for="name" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="name" name="name" required>
+              <input type="text" class="form-control" id="name" name="title" required>
             </div>
             <div class="row mb-3">
                 <div class="col">
@@ -48,12 +49,69 @@
               <label class="form-check-label" for="visible">Visible</label>
             </div>
             <input type="hidden" id="imageURL" name="imageURL">
-            <button type="button" class="btn btn-primary" onclick="addProduct()">Guardar</button>
-          </form>
+            <button type="button" class="btn btn-primary" onclick="addProduct(this)">Guardar <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span></button>
+        </form>
     </div>
     </div>
 
     <!-- end of new prod -->
+
+
+<!-- offcanvas edit prod -->
+<div
+class="offcanvas offcanvas-end"
+tabindex="-1"
+id="offcanvasEdit"
+aria-labelledby="offcanvasRightLabel"
+>
+<div class="offcanvas-header">
+<h5 class="offcanvas-title" id="offcanvasRightLabel">Editar producto</h5>
+<button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="offcanvas"
+    aria-label="Close"
+></button>
+</div>
+<div class="offcanvas-body">
+    <form id="edit-prod-form" method="POST" action="/edit" class="px-3">
+        <div class="mb-3">
+            <label for="image" class="form-label">Imagen</label>
+            <input type="file" class="form-control" id="edit-image" name="image" accept="image/*" onchange="previewEditImage(event)">
+          </div>
+          <img id="edit-preview" src="#" alt="Image Preview" style="max-width: 200px">
+        <div class="mb-3">
+          <label for="brand" class="form-label">Marca</label>
+          <input type="text" class="form-control" id="edit-brand" name="brand" required>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="edit-name" name="title" required>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label for="price" class="form-label">Precio</label>
+                <input type="number" class="form-control" id="edit-price" name="price" required>
+            </div>
+            <div class="col">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="edit-stock" name="stock" required>
+              </div>
+        </div>
+        
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="edit-visible" name="visible" checked>
+          <label class="form-check-label" for="visible">Visible</label>
+        </div>
+        <input type="hidden" id="edit-imageURL" name="imageURL">
+        <input type="hidden" id="edit-id" name="id">
+        <button type="button" class="btn btn-primary" onclick="submitEdit(this)">Guardar <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span></button>
+    </form>
+</div>
+</div>
+
+<!-- end of edit prod -->
+
 
 
 
@@ -63,12 +121,12 @@
       <h1 class="h2">Productos</h1>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="offcanvas"
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="offcanvas"
           data-bs-target="#offcanvasRight">Agregar producto</button>
         </div>
       </div>
     </div>
-    <div class="row p-5 pb-0">
+    <div class="row pX-5">
         <div id="products-table-container" class="row p-5">
             <!-- products table -->
         </div>
@@ -98,17 +156,52 @@
     window.storage = getStorage();
     window.uploadBytes = uploadBytes;
     window.getDownloadURL = getDownloadURL;
-  </script>
-    <script>
-    
-    let products = [];
-    function addProduct() {
+</script>
+<script>
+    $(document).ready( function () {
+        $('#prod-table').DataTable({
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+    });
+let products = [];
+function addProduct(button) {
+
+    let form = document.getElementById('add-prod-form');
+    let elements = form.elements;
+
+    for (let i = 0; i < elements.length; i++) {
+        let element = form.elements[i];
+        if (element.type !== 'submit' && element.type !== 'button' && element.id !== 'imageURL' && element.value.trim() === '') {
+                showAlert('Por favor complete todos los campos', 'danger');
+                console.log(element)
+                return false;
+        } 
+    }
+
     const fileInput = document.getElementById('image');
     const file = fileInput.files[0];
 
     if (file) {
         
-        const storageRef = window.ref(window.storage, 'product_images/' + file.name);
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getFullYear()}${(currentDate.getMonth() + 1).toString().padStart(2, '0')}${currentDate.getDate().toString().padStart(2, '0')}${currentDate.getHours().toString().padStart(2, '0')}${currentDate.getMinutes().toString().padStart(2, '0')}`;
+
+        const storagePath = `product_images/${formattedDate}-${file.name}`;
+
+        const storageRef = window.ref(window.storage, storagePath);
 
         window.uploadBytes(storageRef, file).then((snapshot) => {
             console.log('Uploaded a blob or file!');
@@ -118,19 +211,27 @@
                 document.getElementById('imageURL').value = url;
 
                 // Now you can proceed to save the product with the imageURL
-                console.log("Subido al storage");
+                const spinner = button.querySelector('.spinner-border');
+                spinner.classList.remove('d-none');
+                form.submit();
             });
         });
     } else {
-        alert('Please select an image.');
+        showAlert('Por favor agregue una imagen.', 'danger');
+        return false;
     }
+
+
+    
+
+    
+    showAlert('Producto agregado correctamente', 'success');
 }
 
 function previewImage(event) {
     const fileInput = event.target;
     const previewElement = document.getElementById('preview');
-    const previewLabel = document.getElementById('preview-label');
-
+    
     const file = fileInput.files[0];
     const reader = new FileReader();
 
@@ -141,6 +242,21 @@ function previewImage(event) {
 
     reader.readAsDataURL(file);
 }
+function previewEditImage(event) {
+    const fileInput = event.target;
+    const previewElement = document.getElementById('edit-preview');
+    
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function() {
+        previewElement.src = reader.result;
+        previewElement.style.display = 'block';
+    }
+
+    reader.readAsDataURL(file);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     let dataElement = document.getElementById('data');
     let data = JSON.parse(dataElement.textContent);
@@ -157,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function drawProducts(products){
     let prodHTML = `
-    <table class="table">
+    <table id="prod-table" class="table display">
         <thead>
             <tr>
             <th scope="col">Thumbnail</th>
@@ -186,13 +302,65 @@ function drawProducts(products){
             <td>${p.title}</td>
             <td>${formatCurrency(p.price)}</td>
             <td>${p.stock}</td>
-            <td>Ocultar</td>
-            <td>Editar</td>
-            </tr>`;
+            <td>${getVisibleButton(p.visible, p.id)}</td>
+                <td><button type="button" name="${p.id}" class="btn-sm btn-secondary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEdit" 
+                onclick="editProduct({'id':${p.id},'brand':'${p.brand}','title':'${p.title}','price':${p.price},'stock':${p.stock},'visible':${p.visible},'thumbnail':'${p.thumbnail}'});">Editar</button></td>
+                </tr>`;
     }
     prodHTML += `</tbody></table>`;
         
     return prodHTML;
+}
+function editProduct(product){
+    console.log(product.thumbnail);
+    console.log(product.visible);
+    document.getElementById('edit-id').value = product.id;
+    document.getElementById('edit-brand').value = product.brand;
+    document.getElementById('edit-name').value = product.title;
+    document.getElementById('edit-price').value = product.price;
+    document.getElementById('edit-stock').value = product.stock;
+    document.getElementById('edit-visible').checked = product.visible;
+    document.getElementById('edit-preview').src = product.thumbnail;
+    document.getElementById('edit-imageURL').value = product.thumbnail;
+    
+}
+function getVisibleButton(visible, id){
+    let btnHTML = '';
+    if (visible) {
+        btnHTML = `
+        <button type="button" name="${id}" class="btn-sm btn-outline-secondary" onclick="productVisible(this, 'hide');">Ocultar</button>
+        `;
+    } else {
+        btnHTML = `
+        <button type="button" name="${id}" class="btn-sm btn-primary" onclick="productVisible(this, 'show');">Mostrar</button>
+        `;
+    }
+    return btnHTML;
+}
+
+function productVisible(button, visible){
+    let form = document.createElement('form');
+
+      
+      form.setAttribute('method', 'post');
+      form.setAttribute('action', '/visible');
+
+      let action = document.createElement('input');
+      action.setAttribute('type', 'hidden');
+      action.setAttribute('name', 'action');
+      action.setAttribute('value', visible); 
+
+      form.appendChild(action);
+
+      let id = document.createElement('input');
+      id.setAttribute('type', 'hidden');
+      id.setAttribute('name', 'id');
+      id.setAttribute('value', button.name); 
+
+      form.appendChild(id);
+      
+      document.body.appendChild(form);
+      form.submit();
 }
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-US', {
@@ -200,6 +368,28 @@ function formatCurrency(amount) {
         currency: 'USD',
     }).format(amount);
 }
+function showAlert(message, type) {
+            let alertType = "alert-" + type;
+            let alertElement = document.createElement('div');
+            alertElement.classList.add('alert', alertType, 'alert-dismissible', 'fade', 'show');
+            alertElement.setAttribute('role', 'alert');
+            alertElement.innerHTML = message + `
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                
+            `;
+
+            document.getElementById('alertContainer').appendChild(alertElement);
+
+            setTimeout(function() {
+                let bsAlert = new bootstrap.Alert(alertElement);
+                bsAlert.close();
+            }, 1500);
+}
 </script>
+
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
     {% endblock %}
     

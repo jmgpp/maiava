@@ -147,14 +147,38 @@ def orders():
 
     return render_template("orders.html", orders=orders)
 
-@app.route("/products", methods=["GET"])
+@app.route("/products", methods=["GET", "POST"])
 def products():
+    if request.method == "POST":
+        title = request.form.get("title")
+        brand = request.form.get("brand")
+        price = request.form.get("price")
+        stock = request.form.get("stock")
+        visible = request.form.get('visible') == 'on'
+        thumb = request.form.get("imageURL")
+
+        
+
+        connection = psycopg2.connect(POSTGRESQL_URI)
+        with connection:
+            with connection.cursor() as cursor:
+                query = """
+                            INSERT INTO products (title, brand, price, stock, thumbnail, visible)
+                            VALUES (%s, %s, %s, %s, %s, %s);
+                        """
+                cursor.execute(query, (title, brand, float(price), int(stock), thumb, visible))
+                
+                connection.commit()
+        cursor.close()
+        connection.close()
+        
+
     products = []
     connection = psycopg2.connect(POSTGRESQL_URI)
     with connection:
         with connection.cursor() as cursor:
             query = """
-                        SELECT * FROM products;
+                        SELECT * FROM products ORDER BY id;
                     """
             cursor.execute(query)
             
@@ -163,7 +187,6 @@ def products():
 
             for row in rows:
                 prod_dict = dict(zip(columns, row))
-                #prod_dict['visible'] = 1 if prod_dict['visible'] else 0
                 products.append(prod_dict)
 
     cursor.close()
@@ -171,6 +194,31 @@ def products():
 
 
     return render_template("products.html", products=products)
+
+@app.route("/visible", methods=["POST"])
+def visible():
+    if request.method == "POST":
+        action = request.form.get("action")
+        id = request.form.get("id")
+        vis = True if action == 'show' else False
+
+        connection = psycopg2.connect(POSTGRESQL_URI)
+        with connection:
+            with connection.cursor() as cursor:
+                query = """
+                            UPDATE products
+                            SET visible = %s
+                            WHERE id = %s;
+                        """
+                cursor.execute(query, (vis, id))
+                
+                connection.commit()
+        cursor.close()
+        connection.close()
+      
+    return redirect("/products")
+
+
 
 @app.route("/update_orders", methods=["POST"])
 def update_orders():
@@ -196,17 +244,7 @@ def update_orders():
 
 
         return redirect('/orders')
-    
-
-"""
-@app.route("/success", methods=["GET"])
-def success():
-    return render_template("success.html")
-
-@app.route("/failed", methods=["GET"])
-def failed():
-    return render_template("failed.html")
- """        
+        
 
 def cancel_order(order_id):
     connection = psycopg2.connect(POSTGRESQL_URI)

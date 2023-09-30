@@ -221,26 +221,21 @@
               }, 1500);
           }
   function goToCheckout(){
-      // Create a form element
-      var form = document.createElement('form');
 
-      // Set the form attributes
+      let form = document.createElement('form');
+
       form.setAttribute('method', 'post');
-      form.setAttribute('action', '/checkout'); // Replace with your target URL
+      form.setAttribute('action', '/checkout'); 
 
-      // Create an input element
-      var input = document.createElement('input');
+      let input = document.createElement('input');
       input.setAttribute('type', 'hidden');
-      input.setAttribute('name', 'products'); // Replace with your parameter name
-      input.setAttribute('value', JSON.stringify(cartItems)); // Replace with your parameter value
+      input.setAttribute('name', 'products'); 
+      input.setAttribute('value', JSON.stringify(cartItems)); 
 
-      // Append the input to the form
       form.appendChild(input);
 
-      // Append the form to the body
       document.body.appendChild(form);
 
-      // Submit the form
       form.submit();
 
   }

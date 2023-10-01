@@ -158,3 +158,8 @@ body {
 .product-table td:last-child {
   text-align: right;
 }
+.client-info{
+  text-align: left !important;
+  font-style: italic;
+  color: steelblue;
+}

@@ -111,7 +111,7 @@ main %}
       <tr class="product-row">
         <td colspan="7">
           <table class="product-table">
-            ${drawOrderItems(o.items)}
+            ${drawOrderItems(o.items, o)}
           </table>
         </td>
       </tr>`;
@@ -124,8 +124,12 @@ main %}
 
   }
 
-function drawOrderItems(items){
-    let itemsHTML = "";
+function drawOrderItems(items, order){
+    let itemsHTML =  `
+        <tr>
+            <td class="client-info"><small>${order.email} | ${order.phone}</small></td>
+        </tr>
+        `;
     for (let i = 0; i < items.length; i++) {
         const e = items[i];
 

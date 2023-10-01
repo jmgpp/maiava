@@ -102,7 +102,7 @@ def orders():
     with connection:
         with connection.cursor() as cursor:
             query = """
-                        SELECT orders.id as id, orders.date as date, clients.name as client, orders.total as total, "order-status".status as status
+                        SELECT orders.id as id, orders.date as date, clients.name as client, orders.total as total, "order-status".status as status, clients.email as email, clients.phone as phone
                         FROM orders 
                         JOIN clients ON orders.client_id = clients.id
                         JOIN "order-status" ON orders.status_id = "order-status".id
@@ -344,5 +344,5 @@ def get_client(name, email, phone):
                     return new_client_id
     
 if __name__ == '__main__':
-    #app.debug = True
+    app.debug = True
     app.run()

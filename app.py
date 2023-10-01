@@ -259,7 +259,6 @@ def update_orders():
         data_status = request.form.get("status")
 
         if int(data_status) == 4:
-            print("reaches here")
             cancel_order(data_id)
         
         connection = psycopg2.connect(POSTGRESQL_URI)
@@ -273,7 +272,6 @@ def update_orders():
                         """
                 cursor.execute(query, (data_status, data_id))
         connection.commit()
-
 
         return redirect('/orders')
         
